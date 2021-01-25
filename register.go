@@ -17,7 +17,7 @@ func (c *client) Register(s *Service) error {
 		Interval:                       s.CheckInterval,
 		Body:                           s.MatchBody,
 		TLSSkipVerify:                  true,
-		Status: "Warning",
+		Status:                         "warning",
 		DeregisterCriticalServiceAfter: "5m",
 	}
 

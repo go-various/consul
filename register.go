@@ -26,12 +26,13 @@ func (c *client) Register(s *Service) error {
 		Address:         s.Address,
 		Port:            s.Port,
 		TaggedAddresses: s.ServiceAddress,
+		Meta:            s.Meta,
 		Tags:            append(s.Tags, c.config.Application.Profile),
 		Check:           check,
 	}
-	if c.hclog.IsTrace(){
+	if c.hclog.IsTrace() {
 		bs, _ := json.Marshal(a)
-		c.hclog.Trace("register","service", string(bs))
+		c.hclog.Trace("register", "service", string(bs))
 	}
 	err := c.client.Agent().ServiceRegister(a)
 	return err
@@ -39,8 +40,8 @@ func (c *client) Register(s *Service) error {
 func (c *client) DeRegister(s *Service) error {
 	c.Lock()
 	defer c.Unlock()
-	if c.hclog.IsTrace(){
-		c.hclog.Trace("deregister","service", s.ID)
+	if c.hclog.IsTrace() {
+		c.hclog.Trace("deregister", "service", s.ID)
 	}
 	err := c.client.Agent().ServiceDeregister(s.ID)
 	return err

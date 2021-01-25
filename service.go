@@ -18,6 +18,7 @@ type Service struct {
 	CheckInterval  string
 	Port           int
 	Tags           []string
+	Meta           map[string]string
 	HealthEndpoint string
 	ServiceAddress map[string]api.ServiceAddress
 }
@@ -45,7 +46,7 @@ func (c *client) GetServices(id, tag string) ([]*api.AgentService, error) {
 
 func (c *client) GetService(id, tags string) (*api.AgentService, error) {
 	ss, err := c.GetServices(id, tags)
-	if nil != err{
+	if nil != err {
 		return nil, err
 	}
 	return ss[rand.Intn(len(ss))], nil

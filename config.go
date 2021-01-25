@@ -32,7 +32,7 @@ func (c *client) LoadConfig(out interface{}) error {
 	for _, path := range keyPaths {
 		kvp, _, err := c.client.KV().Get(path, options)
 		if nil != err {
-			return err
+			return fmt.Errorf("load consul config: %s", err.Error())
 		}
 		if kvp == nil {
 			continue
@@ -43,7 +43,7 @@ func (c *client) LoadConfig(out interface{}) error {
 		succCount++
 	}
 	if 0 == succCount{
-		return fmt.Errorf("config %v is empty", keyPaths)
+		return fmt.Errorf("load consul config %v is empty", keyPaths)
 	}
 	return nil
 }

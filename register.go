@@ -27,7 +27,7 @@ func (c *client) Register(s *Service) error {
 		Port:            s.Port,
 		TaggedAddresses: s.ServiceAddress,
 		Meta:            s.Meta,
-		Tags:            append(s.Tags, c.config.Application.Profile),
+		Tags:            s.Tags,
 		Check:           check,
 	}
 	if c.hclog.IsTrace() {

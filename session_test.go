@@ -2,11 +2,12 @@ package consul
 
 import (
 	"testing"
+	"github.com/hashicorp/go-hclog"
 	"time"
 )
 
 func TestNewClient(t *testing.T) {
-	cli, err := NewClient(mockConfig())
+	cli, err := NewClient(mockConfig(), hclog.Default())
 	if nil != err {
 		t.Fatal(err)
 	}

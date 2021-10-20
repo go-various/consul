@@ -2,6 +2,7 @@ package consul
 
 import (
 	"github.com/hashicorp/consul/api"
+	"github.com/hashicorp/go-hclog"
 	"testing"
 )
 
@@ -9,13 +10,14 @@ func TestClient_KVInfo(t *testing.T) {
 	centralConfig := Config{
 		Token:       "",
 	}
-	cli, err := NewClient(&centralConfig)
+	cli, err := NewClient(&centralConfig,hclog.Default())
 	if nil != err {
 		t.Fatal(err)
 	}
 	key := "/config/jdsh-pay,dev/1.0.0"
 	if kvp, err := cli.KVInfo(key, nil); err != nil {
 		t.Fatal(err)
+		return
 	} else {
 		t.Log(string(kvp.Value))
 	}
@@ -23,7 +25,7 @@ func TestClient_KVInfo(t *testing.T) {
 
 func TestClient_KVCas(t *testing.T) {
 	centralConfig := Config{}
-	cli, err := NewClient(&centralConfig)
+	cli, err := NewClient(&centralConfig,hclog.Default())
 	if nil != err {
 		t.Fatal(err)
 	}
@@ -40,7 +42,7 @@ func TestClient_KVCas(t *testing.T) {
 }
 func TestClient_KVAcquire(t *testing.T) {
 	centralConfig := Config{}
-	cli, err := NewClient(&centralConfig)
+	cli, err := NewClient(&centralConfig,hclog.Default())
 	if nil != err {
 		t.Fatal(err)
 	}
@@ -55,7 +57,7 @@ func TestClient_KVAcquire(t *testing.T) {
 
 func TestClient_KVRelease(t *testing.T) {
 	centralConfig := Config{}
-	cli, err := NewClient(&centralConfig)
+	cli, err := NewClient(&centralConfig,hclog.Default())
 	if nil != err {
 		t.Fatal(err)
 	}

@@ -2,6 +2,8 @@ package consul
 
 import (
 	"testing"
+	"github.com/hashicorp/go-hclog"
+
 )
 
 type exampleConfig struct {
@@ -9,7 +11,7 @@ type exampleConfig struct {
 }
 
 func TestClient_LoadConfig(t *testing.T) {
-	cli, err := NewClient(mockConfig())
+	cli, err := NewClient(mockConfig(),hclog.Default())
 	if nil != err {
 		t.Fatal(err)
 	}

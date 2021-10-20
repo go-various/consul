@@ -6,8 +6,6 @@ import (
 	"github.com/hashicorp/consul/api"
 	"github.com/hashicorp/go-hclog"
 	"net/http"
-	"os"
-	"strings"
 	"sync"
 	"time"
 )
@@ -79,7 +77,7 @@ type client struct {
 	hclog hclog.Logger
 }
 
-func NewClient(c *Config) (Client, error) {
+func NewClient(c *Config, logger hclog.Logger) (Client, error) {
 	cf := api.DefaultConfig()
 	if c.Datacenter != "" {
 		cf.Datacenter = c.Datacenter
@@ -102,22 +100,7 @@ func NewClient(c *Config) (Client, error) {
 	}
 
 	_client := &client{client: cli, config: c}
-	_client.hclog = hclog.New(&hclog.LoggerOptions{
-		Name:            "consul",
-		Level:           hclog.DefaultLevel,
-	})
-	if level := os.Getenv("CONSUL_LOG_LEVEL"); level != ""{
-		switch strings.ToUpper(level) {
-		case "ERROR":
-			_client.hclog.SetLevel(hclog.Error)
-		case "TRACE":
-			_client.hclog.SetLevel(hclog.Trace)
-		case "DEBUG":
-			_client.hclog.SetLevel(hclog.Debug)
-		default:
-			_client.hclog.SetLevel(hclog.Info)
-		}
-	}
+	_client.hclog = logger.Named("consul")
 
 	return _client, err
 }

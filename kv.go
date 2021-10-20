@@ -7,6 +7,9 @@ import (
 )
 
 func (c *client) KVFire(key string, opts *api.QueryOptions, out interface{}) error {
+	if nil == opts{
+		opts = &api.QueryOptions{}
+	}
 	kvp, _, err := c.client.KV().Get(key, c.queryOptions(opts))
 	if nil != err {
 		return err
@@ -18,6 +21,9 @@ func (c *client) KVFire(key string, opts *api.QueryOptions, out interface{}) err
 }
 
 func (c *client) KVInfo(key string, opts *api.QueryOptions) (*api.KVPair, error) {
+	if nil == opts{
+		opts = &api.QueryOptions{}
+	}
 	kvp, _, err := c.client.KV().Get(key, c.queryOptions(opts))
 	if nil != err {
 		return nil, err
@@ -29,6 +35,9 @@ func (c *client) KVInfo(key string, opts *api.QueryOptions) (*api.KVPair, error)
 }
 
 func (c *client) KVRelease(key string, opts *api.QueryOptions) error {
+	if nil == opts{
+		opts = &api.QueryOptions{}
+	}
 	kvp, err := c.KVInfo(key, opts)
 	if nil != err {
 		return err
@@ -45,6 +54,9 @@ func (c *client) KVRelease(key string, opts *api.QueryOptions) error {
 }
 
 func (c *client) KVAcquire(key, session string, opts *api.QueryOptions) (success bool, err error) {
+	if nil == opts{
+		opts = &api.QueryOptions{}
+	}
 
 	kvp, err := c.KVInfo(key, opts)
 	if nil != err {
@@ -56,6 +68,10 @@ func (c *client) KVAcquire(key, session string, opts *api.QueryOptions) (success
 	return success, err
 }
 func (c *client) KVCas(p *api.KVPair, opts *api.WriteOptions) (bool, error) {
+
+	if nil == opts{
+		opts = &api.WriteOptions{}
+	}
 	ret, _, err := c.client.KV().CAS(p, c.writeOptions(opts))
 	return ret, err
 }

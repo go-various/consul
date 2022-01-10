@@ -23,9 +23,13 @@ func (c *client) LoadConfig(out interface{}) error {
 	app := c.config.Application
 	keyPaths := []string{
 		fmt.Sprintf("/config/application/%s", cfg.DataKey),
-		fmt.Sprintf("/config/application,%s/%s", app.Profile, cfg.DataKey),
+		if app.Profile != ""{
+			fmt.Sprintf("/config/application,%s/%s", app.Profile, cfg.DataKey),
+		}
 		fmt.Sprintf("/config/%s/%s", app.Name, cfg.DataKey),
-		fmt.Sprintf("/config/%s,%s/%s", app.Name, app.Profile, cfg.DataKey),
+		if app.Profile != ""{
+			fmt.Sprintf("/config/%s,%s/%s", app.Name, app.Profile, cfg.DataKey),
+		}
 	}
 	options := c.queryOptions(nil)
 	var succCount = 0

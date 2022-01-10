@@ -21,16 +21,21 @@ func (c *client) LoadConfig(out interface{}) error {
 	}
 	cfg := c.config.Config
 	app := c.config.Application
-	keyPaths := []string{
-		fmt.Sprintf("/config/application/%s", cfg.DataKey),
-		if app.Profile != ""{
-			fmt.Sprintf("/config/application,%s/%s", app.Profile, cfg.DataKey),
-		}
-		fmt.Sprintf("/config/%s/%s", app.Name, cfg.DataKey),
-		if app.Profile != ""{
-			fmt.Sprintf("/config/%s,%s/%s", app.Name, app.Profile, cfg.DataKey),
-		}
+
+	keyPaths := []string{ fmt.Sprintf("/config/application/%s", cfg.DataKey)}
+	if app.Profile != ""{
+		val := fmt.Sprintf("/config/application,%s/%s", app.Profile, cfg.DataKey)
+		keyPaths = append(keyPaths, val)
 	}
+
+	val := fmt.Sprintf("/config/%s/%s", app.Name, cfg.DataKey)
+	keyPaths = append(keyPaths, val)
+
+	if app.Profile != ""{
+		val = fmt.Sprintf("/config/%s,%s/%s", app.Name, app.Profile, cfg.DataKey)
+		keyPaths = append(keyPaths, val)
+	}
+
 	options := c.queryOptions(nil)
 	var succCount = 0
 	for _, path := range keyPaths {
